@@ -64,12 +64,12 @@ BEGIN
     -- Only insert if a condition set was met
     IF v_condition_set IS NOT NULL THEN
         INSERT INTO public.bullish_signals_monitoring (
-            symbol, timeframe, current_price, score, rsi, atr, macd_histogram, golden_cross, bullish_engulfing,
+            id, symbol, timeframe, current_price, score, rsi, atr, macd_histogram, golden_cross, bullish_engulfing,
             hammer, close_to_support, morning_star, three_white_soldiers, doji, increasing_volume,
             volume_spike, macd_crossover, price_above_ma50, price_above_ma200, rsi_bullish_divergence,
             falling_wedge_breakout, alert_triggered_at, created_at, condition_set
         ) VALUES (
-            NEW.symbol, NEW.timeframe, NEW.current_price, NEW.score, NEW.rsi, NEW.atr, NEW.macd_histogram,
+            NEW.id, NEW.symbol, NEW.timeframe, NEW.current_price, NEW.score, NEW.rsi, NEW.atr, NEW.macd_histogram,
             NEW.golden_cross, NEW.bullish_engulfing, NEW.hammer, NEW.close_to_support, NEW.morning_star,
             NEW.three_white_soldiers, NEW.doji, NEW.increasing_volume, NEW.volume_spike,
             NEW.macd_crossover, NEW.price_above_ma50, NEW.price_above_ma200, NEW.rsi_bullish_divergence,
