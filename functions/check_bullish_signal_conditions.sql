@@ -32,43 +32,33 @@ BEGIN
            NEW.price_above_ma200 IS TRUE AND
 		   NEW.timeframe = '1h') THEN
            v_condition_set := 4;
-    -- Set 5
-    ELSIF (NEW.engulfing IS TRUE AND
-           NEW.increasing_volume IS TRUE AND
-		   NEW.timeframe = '1h') THEN
-           v_condition_set := 5;
     -- 1d Conditions
-    -- Set 6
+    -- Set 5
     ELSEIF (NEW.macd_crossover IS TRUE AND
         NEW.increasing_volume IS TRUE AND
         NEW.bullish_engulfing IS TRUE AND
 		NEW.timeframe = '1d') THEN
-        v_condition_set := 6;
-    -- Set 7
+        v_condition_set := 5;
+    -- Set 6
     ELSIF (NEW.macd_crossover IS TRUE AND
            NEW.increasing_volume IS TRUE AND
            NEW.morning_star IS TRUE AND
+		   NEW.timeframe = '1d') THEN
+           v_condition_set := 6;
+    -- Set 7
+    ELSIF (NEW.macd_crossover IS TRUE AND
+           NEW.increasing_volume IS TRUE AND
+           NEW.volume_spike IS TRUE AND
+           NEW.falling_wedge_breakout IS TRUE AND
 		   NEW.timeframe = '1d') THEN
            v_condition_set := 7;
     -- Set 8
     ELSIF (NEW.macd_crossover IS TRUE AND
            NEW.increasing_volume IS TRUE AND
            NEW.volume_spike IS TRUE AND
-           NEW.falling_wedge_breakout IS TRUE AND
-		   NEW.timeframe = '1d') THEN
-           v_condition_set := 8;
-    -- Set 9
-    ELSIF (NEW.macd_crossover IS TRUE AND
-           NEW.increasing_volume IS TRUE AND
-           NEW.volume_spike IS TRUE AND
            NEW.price_above_ma200 IS TRUE AND
 		   NEW.timeframe = '1d') THEN
-           v_condition_set := 9;
-    -- Set 10
-    ELSIF (NEW.engulfing IS TRUE AND
-           NEW.increasing_volume IS TRUE AND
-		   NEW.timeframe = '1d') THEN
-           v_condition_set := 10;
+           v_condition_set := 8;
 	END IF;
 
     -- Only insert if a condition set was met
