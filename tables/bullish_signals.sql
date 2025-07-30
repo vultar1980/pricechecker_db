@@ -21,6 +21,10 @@ price_above_ma50 BOOLEAN,
 price_above_ma200 BOOLEAN,
 rsi_bullish_divergence BOOLEAN,
 falling_wedge_breakout BOOLEAN, -- Added Falling Wedge Breakout
+bull_flag BOOLEAN,
+bb_squeeze_breakout BOOLEAN,
+break_above_r1 BOOLEAN,
+support_price NUMERIC,
 alert_triggered_at TIMESTAMP,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
