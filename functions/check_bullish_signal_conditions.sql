@@ -17,9 +17,50 @@ DECLARE
 BEGIN
     v_condition_set := NULL; -- Initialize the variable to NULL
 
+       -- 15m Conditions
+   -- Set 301
+    IF (NEW.doji IS TRUE AND
+        NEW.increasing_volume IS TRUE AND
+        NEW.price_above_ma50 IS TRUE AND
+        NEW.price_above_ma200 IS TRUE AND
+	 NEW.timeframe = '15m') THEN
+        v_condition_set := 301;
+   	-- Set 303
+    ELSEIF (NEW.macd_crossover IS TRUE AND
+        NEW.increasing_volume IS TRUE AND
+        NEW.price_above_ma50 IS TRUE AND
+        NEW.price_above_ma200 IS TRUE AND
+		NEW.approaching_golden_cross IS TRUE AND
+	 NEW.timeframe = '15m') THEN
+        v_condition_set := 303;
+    -- Set 302
+    ELSEIF (NEW.macd_crossover IS TRUE AND
+        NEW.increasing_volume IS TRUE AND
+        NEW.price_above_ma50 IS TRUE AND
+        NEW.price_above_ma200 IS TRUE AND
+		NEW.bull_flag IS TRUE AND
+	 NEW.timeframe = '15m') THEN
+        v_condition_set := 302;
+	-- Set 304
+    ELSEIF (NEW.close_to_support IS TRUE AND
+        NEW.increasing_volume IS TRUE AND
+		NEW.volume_spike IS TRUE AND
+        NEW.price_above_ma50 IS TRUE AND
+        NEW.price_above_ma200 IS TRUE AND
+		NEW.macd_crossover IS TRUE AND
+	 NEW.timeframe = '15m') THEN
+        v_condition_set := 304;
+	-- Set 305
+    ELSEIF (NEW.close_to_support IS TRUE AND
+        NEW.increasing_volume IS TRUE AND
+		NEW.bb_squeeze_breakout IS TRUE AND
+        NEW.price_above_ma50 IS TRUE AND
+	NEW.timeframe = '15m') THEN
+        v_condition_set := 305;
+
 	-- 1hr Conditions
     -- Set 1
-    IF (NEW.macd_crossover IS TRUE AND
+    ELSEIF (NEW.macd_crossover IS TRUE AND
         NEW.increasing_volume IS TRUE AND
         NEW.bullish_engulfing IS TRUE AND
 		NEW.timeframe = '1h') THEN
@@ -105,6 +146,11 @@ BEGIN
            NEW.close_to_support IS TRUE AND
 	    NEW.timeframe = '1h') THEN
            v_condition_set := 11;
+ -- Set 12
+    ELSIF (NEW.macd_crossover IS TRUE AND
+           NEW.rsi_bullish_divergence IS TRUE AND
+	    NEW.timeframe = '1h') THEN
+           v_condition_set := 12;
 
     -- 4h Conditions
     -- Set 1
@@ -251,7 +297,7 @@ BEGIN
     -- Multiple inserts
     -- Check for existing rows for the same symbol within a 5-hour window in bullish_signals
     
-       -- Count total matching alerts
+      /* -- Count total matching alerts
        SELECT COUNT(*),
               BOOL_OR(timeframe = '1h'),
               BOOL_OR(timeframe = '4h')
@@ -265,6 +311,7 @@ BEGIN
        IF v_count > 2 AND v_has_1h AND v_has_4h THEN
               NEW.id := 1000000;
        END IF;
+	   */
 
     -- Only insert if a condition set was met AND is active for monitoring
     IF v_condition_set IS NOT NULL THEN

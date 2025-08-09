@@ -1,4 +1,6 @@
-DROP TABLE IF EXISTS public.trades;
+-- Table: public.trades
+
+-- DROP TABLE IF EXISTS public.trades;
 
 CREATE TABLE IF NOT EXISTS public.trades
 (
@@ -6,17 +8,16 @@ CREATE TABLE IF NOT EXISTS public.trades
     symbol text COLLATE pg_catalog."default",
     timeframe text COLLATE pg_catalog."default",
     inserted_at timestamp without time zone,
-	buy_at timestamp without time zone,
-	close_at timestamp without time zone,
-	test_buy bool,
+    buy_at timestamp without time zone,
+    close_at timestamp without time zone,
+    test_buy integer,
     buy_price numeric,
-	buy_quantity numeric,
-	buy_total numeric,
+    buy_quantity numeric,
     sell_rule integer,
-	sell_price numeric,
-	sell_quanity numeric,
-	sell_total numeric,
-	active bool
+    sell_price numeric,
+    sell_quanity numeric,
+    sell_total numeric,
+    last_update timestamp without time zone
 )
 
 TABLESPACE pg_default;

@@ -1,6 +1,6 @@
--- Table: public.bullish_signals_monitoring
+-- Table: public.trade_log
 
-DROP TABLE IF EXISTS public.trade_log;
+-- DROP TABLE IF EXISTS public.trade_log;
 
 CREATE TABLE IF NOT EXISTS public.trade_log
 (
@@ -8,9 +8,9 @@ CREATE TABLE IF NOT EXISTS public.trade_log
     symbol text COLLATE pg_catalog."default",
     timeframe text COLLATE pg_catalog."default",
     inserted_at timestamp without time zone,
-	sell_rule integer,
-	sell_price numeric,
-	sell_quantity numeric
+    sell_rule integer,
+    sell_price numeric,
+    sell_quantity numeric
 )
 
 TABLESPACE pg_default;
