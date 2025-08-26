@@ -24,7 +24,12 @@ BEGIN
 	  AND NEW.cmf >= 0.06
 	  AND NEW.bull_flag IS TRUE) 
 	  THEN v_condition_set := 1;
-    -- Set 2
+	-- Set 11
+    ELSEIF (NEW.nr7 IS TRUE
+	  AND NEW.inside_bar IS TRUE
+	  AND NEW.close_to_support IS FALSE)
+	  THEN v_condition_set := 11;
+	-- Set 2
     ELSEIF (NEW.timeframe = '1h' 
 	  AND NEW.price_above_ma50 IS TRUE
 	  AND NEW.price_above_ma200 IS TRUE
@@ -48,20 +53,23 @@ BEGIN
 	 		NEW.weekly_confirm IS TRUE AND
   			NEW.rsi_bullish_regime IS TRUE AND
   			NEW.inside_bar IS TRUE AND
-  			NWE.obv >= 287997131 AND
+  			NEW.obv >= 287997131 AND
   			NEW. mfi >= 74.8 AND
   			NEW.roc10 >= 24.6) 
 		   THEN v_condition_set := 5;
     -- Set 6
      ELSIF (NEW.timeframe = '4h' AND 
 			NEW.break_above_r1 IS TRUE AND
+			((NEW.atr / NULLIF(NEW.current_price, 0::numeric)) * 100) > 6  AND
   			NEW.adx >= 44.4)
 		   THEN v_condition_set := 6;
+	 /*
 	 -- Set 7
      ELSIF (NEW.timeframe = '4h' AND 
 			NEW.macd_crossover IS TRUE AND
   			NEW.break_above_r1 IS TRUE)
 		   THEN v_condition_set := 7;
+	 */
 	 -- Set 8
      ELSIF (NEW.timeframe = '4h' AND 
 		  	NEW.macd_crossover IS TRUE AND 
@@ -77,8 +85,30 @@ BEGIN
 			NEW.macd_crossover IS TRUE AND
   			NEW.cmf >= -0.05)
 		   THEN v_condition_set := 10;
+	-- Set 11
+	ELSIF (NEW.timeframe = '1h' AND
+			NEW.increasing_volume = TRUE AND
+			NEW.volume_spike = TRUE AND
+			NEW.price_above_ma50 = TRUE AND
+			NEW.price_above_ma200 = FALSE AND
+			NEW.falling_wedge_breakout = TRUE AND
+			COALESCE(NEW.bars_in_squeeze, 0) <= 2 AND
+			COALESCE(NEW.bars_since_macd_cross, 0) <= 6)
+		   THEN v_condition_set := 11;
+	-- Set 12
+		ELSIF (NEW.timeframe = '1h'
+		    AND NEW.increasing_volume = TRUE
+		    AND (NEW.volume_spike = TRUE OR NEW.stochrsi_kxdupbull = TRUE)
+		    AND NEW.price_above_ma50 = TRUE
+		    AND (NEW.price_above_ma200 = FALSE OR NEW.price_above_ma200 IS NULL)
+		    AND NEW.close_to_support = TRUE
+		    AND COALESCE(NEW.bars_in_squeeze, 0) <= 2
+		    AND COALESCE(NEW.bars_since_macd_cross, 0) <= 6
+		    AND ((NEW.atr / NULLIF(NEW.current_price, 0::numeric)) * 100) BETWEEN 1.1 AND 6
+		) THEN
+		    v_condition_set := 12;
 	END IF;
-
+		
 
     -- Ensure v_condition_set is set when conditions are met; if not matched, return NEW.
     IF v_condition_set IS NULL THEN
